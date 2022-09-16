@@ -1,0 +1,10 @@
+image: node:8.11.3
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          caches:
+            - node
+          script:
+            - npm install
+            - npm run lint

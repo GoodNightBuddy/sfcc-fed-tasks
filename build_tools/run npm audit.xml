@@ -1,0 +1,34 @@
+<project name="npm-audit" default="npm-audit" basedir="." >
+
+  <!-- This build task exists to allow you to run 'npm audit' locally separate from the 
+       builders.xml file. It is referenced in the builders.xml file using 
+       <import file="filename"/> so that it will run as part of the overall build. -->
+
+  <!-- Using back slash for windows and not using workingCopy variable in the npm audit 
+       report filename since workingCopy contains forward slash. Not very important but 
+       makes the path in echo message below look correct in windows. 
+       
+       The npm audit report pathname cannot be in the deploy/working directory as it 
+       causes the yazl node module to crash with an "invalid relative path: " error 
+       when trying to create the zip files. -->
+  <condition property="separator" value="\">
+		<os family="windows" />
+  </condition>
+  <condition property="separator" value="/">
+		<os family="unix" />
+  </condition>
+
+  <target name="npm-audit">
+    <property name="npm-audit-report-path" value="${basedir}${separator}npm audit report_build_${buildVersion}.txt" />
+		<exec executable="cmd" osfamily="windows" failonerror="false">
+			<arg value="/c"/>
+			<arg value='npm audit > "${npm-audit-report-path}" &amp; type "${npm-audit-report-path}"'/>
+		</exec>
+		<exec executable="/bin/bash" osfamily="unix" failonerror="false">
+			<arg value="-c"/>
+			<arg value='npm audit > "${npm-audit-report-path}" | cat "${npm-audit-report-path}"'/>
+		</exec>
+    	<echo>npm audit report can be found at ${npm-audit-report-path}</echo>
+  </target>
+
+</project>

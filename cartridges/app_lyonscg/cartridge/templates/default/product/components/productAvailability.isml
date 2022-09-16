@@ -1,0 +1,8 @@
+<isscript>
+	var enableWishlists = dw.system.Site.getCurrent().getCustomPreferenceValue("enableWishlists");
+</isscript>
+
+<!-- Availability -->
+<div class="row availability product-availability" data-ready-to-order="${product.readyToOrder}" data-available="${product.available}">
+    <isinclude template="product/components/availability" />
+</div>
