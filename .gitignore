@@ -22,9 +22,12 @@ test/integration/config.json
 
 # LRA Patterns
 cartridges/app_storefront_base/cartridge/static/**/fonts/
-cartridges/site_siteid/cartridge/static/**/css/
-cartridges/site_siteid/cartridge/static/**/js/
-cartridges/site_siteid/cartridge/static/**/fonts/
+cartridges/site_pnavrotskyi/cartridge/static/**/css/
+cartridges/site_pnavrotskyi/cartridge/static/**/js/
+cartridges/site_pnavrotskyi/cartridge/static/**/fonts/
+cartridges/org_pnavrotskyi
+
+
 lastbuild.properties
 .tern-project
 jsconfig.json
