@@ -29,15 +29,6 @@ function getATSMessage(availabilityModel) {
                 inventoryRecord.ATS.value
             )
         );
-    } else {
-        ATS.messages.push(
-            Resource.msgf(
-                'label.quantity.in.stock',
-                'common',
-                null,
-                100
-            )
-        );
     }
     return ATS;
 }
