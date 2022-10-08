@@ -31,7 +31,7 @@ server.post('Handler', csrfProtection.validateAjaxRequest, function (req, res, n
         res.setStatusCode(500);
         res.json({
             error: true,
-            redirectUrl: URLUtils.url('Newsletter-Error').toString()
+            redirectUrl: URLUtils.url('Error-Start').toString()
         });
     }
 
@@ -50,16 +50,5 @@ server.get('Success', function (req, res, next) {
     next();
 });
 
-server.get('Error', function (req, res, next) {
-    var continueUrl = dw.web.URLUtils.url('Newsletter-Show');
-    var newsletterForm = server.forms.getForm('newsletter');
-
-    res.render('newsletter/newslettererror', {
-        continueUrl: continueUrl,
-        newsletterForm: newsletterForm
-    });
-
-    next();
-});
 
 module.exports = server.exports();
