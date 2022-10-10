@@ -36,7 +36,7 @@ server.post('Handler', csrfProtection.validateAjaxRequest, function (req, res, n
                     redirectUrl: URLUtils.url('Newsletter-Success').toString()
                 });
 
-                var unsubscribeUrl = URLUtils.http('Newsletter-Unsubscribe', 'type', 'NewsletterSubscriptionPNavrotskyi', 'email', newsletterForm.email.value).toString();
+                var unsubscribeUrl = URLUtils.http('Newsletter-Unsubscribe', 'type', 'NewsletterSubscriptionPNavrotskyi', 'email', newsletterForm.email.value).toString(); // Something like /Newsletter-Unsubscribe?type=NewsletterSubscriptionPNavrotskyi&email=pnavrotskyi@speroteck.com
                 dw.system.HookMgr.callHook('newsletter.email', 'send', [newsletterForm.email.value, unsubscribeUrl]);
             });
         } catch (err) {
@@ -81,6 +81,7 @@ server.get('Success', function (req, res, next) {
 
 server.get('Unsubscribe', function (req, res, next) {
     var newsletterForm = server.forms.getForm('newsletter');
+    var continueUrl = dw.web.URLUtils.url('Newsletter-Show');
     var txn = require('dw/system/Transaction');
     newsletterForm.valid = newsletterForm.email.value === newsletterForm.emailconfirm.value && newsletterForm.valid;
 
@@ -88,15 +89,24 @@ server.get('Unsubscribe', function (req, res, next) {
         txn.wrap(function () {
             var CustomObjectMgr = require('dw/object/CustomObjectMgr');
             var co = CustomObjectMgr.getCustomObject(req.querystring.type, req.querystring.email);
-            CustomObjectMgr.remove(co);
-            res.json({
-                message: 'Your succesfully unsubscribe. We will miss you...'
-
-            });
+            if (co) {
+                CustomObjectMgr.remove(co);
+                res.render('newsletter/newsletterunsubscribe', {
+                    message: Resource.msg('newsletter.unsubscribe.message', 'newsletter', null),
+                    continueUrl: continueUrl
+                });
+            } else {
+                res.render('newsletter/newsletterunsubscribe', {
+                    message: Resource.msg('error.unsubscribe.nullobject', 'newsletter', null),
+                    continueUrl: continueUrl
+                });
+            }
         });
     } catch (error) {
+        res.setStatusCode(500);
         res.json({
-            message: 'You are already unsubscribe'
+            error: true,
+            redirectUrl: URLUtils.url('Error-Start').toString()
         });
     }
     next();
