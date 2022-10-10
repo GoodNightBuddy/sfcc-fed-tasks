@@ -1,0 +1,13 @@
+    <isif condition="${pdict.queryString === "include=true"}">
+        <isinclude template="basket/basketTemplate" />
+    <iselse/>
+
+        <isdecorate template="common/layout/page">
+            <isscript>
+                var assets = require('*/cartridge/scripts/assets.js');
+                assets.addCss('/css/cart.css');
+            </isscript>
+
+            <isinclude template="basket/basketTemplate" />
+        </isdecorate>
+    </isif>
