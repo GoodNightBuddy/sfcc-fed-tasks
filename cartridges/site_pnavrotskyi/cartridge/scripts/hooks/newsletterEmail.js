@@ -1,6 +1,6 @@
 'use strict';
 
-exports.send = function (customerEmail) {
+exports.send = function (customerEmail, unsubscribeUrl) {
     var HashMap = require('dw/util/HashMap');
     var Mail = require('dw/net/Mail');
     var Resource = require('dw/web/Resource');
@@ -8,6 +8,7 @@ exports.send = function (customerEmail) {
     var Template = require('dw/util/Template');
 
     var context = new HashMap();
+    context.unsubscribeUrl = unsubscribeUrl;
     var email = new Mail();
     var template = new Template('/newsletter/confirmationemail');
     var content = template.render(context).text;

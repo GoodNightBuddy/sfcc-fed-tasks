@@ -36,7 +36,8 @@ server.post('Handler', csrfProtection.validateAjaxRequest, function (req, res, n
                     redirectUrl: URLUtils.url('Newsletter-Success').toString()
                 });
 
-                dw.system.HookMgr.callHook('newsletter.email', 'send', newsletterForm.email.value);
+                var unsubscribeUrl = URLUtils.http('Newsletter-Unsubscribe', 'type', 'NewsletterSubscriptionPNavrotskyi', 'email', newsletterForm.email.value).toString();
+                dw.system.HookMgr.callHook('newsletter.email', 'send', [newsletterForm.email.value, unsubscribeUrl]);
             });
         } catch (err) {
             if (err.javaName === 'MetaDataException') {
@@ -76,5 +77,30 @@ server.get('Success', function (req, res, next) {
 
     next();
 });
+
+
+server.get('Unsubscribe', function (req, res, next) {
+    var newsletterForm = server.forms.getForm('newsletter');
+    var txn = require('dw/system/Transaction');
+    newsletterForm.valid = newsletterForm.email.value === newsletterForm.emailconfirm.value && newsletterForm.valid;
+
+    try {
+        txn.wrap(function () {
+            var CustomObjectMgr = require('dw/object/CustomObjectMgr');
+            var co = CustomObjectMgr.getCustomObject(req.querystring.type, req.querystring.email);
+            CustomObjectMgr.remove(co);
+            res.json({
+                message: 'Your succesfully unsubscribe. We will miss you...'
+
+            });
+        });
+    } catch (error) {
+        res.json({
+            message: 'You are already unsubscribe'
+        });
+    }
+    next();
+});
+
 
 module.exports = server.exports();
