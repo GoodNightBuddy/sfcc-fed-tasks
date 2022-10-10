@@ -23,7 +23,7 @@ server.append('Show', cache.applyCustomCache, function (req, res, next) {
 
     res.setViewData({
         param1: viewData.param1 + ' AND ' + appendParam + ' AND querystring param = ' + queryparam,
-        param2: res.cachePeriod + ' ' + res.cachePeriodUnit
+        param2: res.cachePeriod + ' ' + res.cachePeriodUnitу
     });
     next();
 });
