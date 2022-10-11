@@ -20,12 +20,12 @@ server.get('Show', csrfProtection.generateToken, function (req, res, next) {
 
 server.post('Handler', csrfProtection.validateAjaxRequest, function (req, res, next) {
     var newsletterForm = server.forms.getForm('newsletter');
-    var txn = require('dw/system/Transaction');
+    var Transaction = require('dw/system/Transaction');
     newsletterForm.valid = newsletterForm.email.value === newsletterForm.emailconfirm.value && newsletterForm.valid;
 
     if (newsletterForm.valid) {
         try {
-            txn.wrap(function () {
+            Transaction.wrap(function () {
                 var CustomObjectMgr = require('dw/object/CustomObjectMgr');
                 var co = CustomObjectMgr.createCustomObject('NewsletterSubscriptionPNavrotskyi', newsletterForm.email.value);
                 co.custom.firstName = newsletterForm.fname.value;
@@ -82,11 +82,11 @@ server.get('Success', function (req, res, next) {
 server.get('Unsubscribe', function (req, res, next) {
     var newsletterForm = server.forms.getForm('newsletter');
     var continueUrl = dw.web.URLUtils.url('Newsletter-Show');
-    var txn = require('dw/system/Transaction');
+    var Transaction = require('dw/system/Transaction');
     newsletterForm.valid = newsletterForm.email.value === newsletterForm.emailconfirm.value && newsletterForm.valid;
 
     try {
-        txn.wrap(function () {
+        Transaction.wrap(function () {
             var CustomObjectMgr = require('dw/object/CustomObjectMgr');
             var co = CustomObjectMgr.getCustomObject(req.querystring.type, req.querystring.email);
             if (co) {
