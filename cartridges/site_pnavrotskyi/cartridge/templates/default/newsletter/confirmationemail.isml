@@ -1,0 +1,3 @@
+<h1>We look forward to keeping you updated with our latest products!</h1>
+<h3>Stay tuned for emails from our brand.</h3>
+<a href="${pdict.unsubscribeUrl}">Unsubscribe</a>
