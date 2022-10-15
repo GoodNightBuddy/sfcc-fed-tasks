@@ -3,6 +3,11 @@
         {
             "name": "newsletter.email",
             "script": "./cartridge/scripts/hooks/newsletterEmail.js"
+        },
+
+        {
+            "name": "exportCustomers.email",
+            "script": "./cartridge/scripts/hooks/exportCustomersEmail.js"
         }
     ]
 }

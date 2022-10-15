@@ -1,0 +1,95 @@
+{
+    "step-types": {
+        "script-module-step": [
+            {
+                "@type-id": "custom.DeleteCustomObjectsPNavrotskyi",
+                "@supports-parallel-execution": "false",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "This script deletes all custom object for a given type. It runs in site scope.",
+                "module": "site_pnavrotskyi/cartridge/scripts/steps/deleteCustomObjectsPNavrotskyi.js",
+                "function": "deleteCOs",
+                "transactional": "true",
+                "timeout-in-seconds": "900",
+                "parameters": {
+                    "parameters": [
+                        {
+                            "@name": "CustomObjectType",
+                            "@type": "string",
+                            "@required": "true",
+                            "description": "The Custom Object type to delete instances on this site."
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when the step failed with an error."
+                        },
+                        {
+                            "@code": "FINISHED",
+                            "description": "Used when the step finished successfully."
+                        },
+                        {
+                            "@code": "FINISHED_WITH_WARNINGS",
+                            "description": "Used when the step finished with warnings."
+                        }
+                    ]
+                }
+            },
+
+            {
+                "@type-id": "custom.exportCustomersPNavrotskyi",
+                "@supports-parallel-execution": "false",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "This script filtered customers and export them into .csv file.",
+                "module": "site_pnavrotskyi/cartridge/scripts/steps/exportCustomersPNavrotskyi.js",
+                "function": "exportCustomers",
+                "transactional": "true",
+                "timeout-in-seconds": "900",
+                "parameters": {
+                    "parameters": [
+                        {
+                            "@name": "startDate",
+                            "@type": "datetime-string",
+                            "@required": "false",
+                            "description": "Search query as a creationDate attribute in customers profile"
+                        },
+
+                        {
+                            "@name": "endtDate",
+                            "@type": "datetime-string",
+                            "@required": "false",
+                            "description": "Search query as a creationDate attribute in customers profile"
+                        },
+
+                        {
+                            "@name": "email",
+                            "@type": "string",
+                            "@required": "true",
+                            "description": "Search query as a creationDate attribute in customers profile"
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when the step failed with an error."
+                        },
+                        {
+                            "@code": "FINISHED",
+                            "description": "Used when the step finished successfully."
+                        },
+                        {
+                            "@code": "FINISHED_WITH_WARNINGS",
+                            "description": "Used when the step finished with warnings."
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
