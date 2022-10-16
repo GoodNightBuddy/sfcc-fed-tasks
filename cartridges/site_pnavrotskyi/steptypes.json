@@ -69,7 +69,7 @@
                             "@name": "email",
                             "@type": "string",
                             "@required": "true",
-                            "description": "Search query as a creationDate attribute in customers profile"
+                            "description": "Email to which the results will be sent. You can define several emails via coma delimiter"
                         }
                     ]
                 },

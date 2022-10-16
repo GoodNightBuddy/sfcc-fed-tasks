@@ -14,25 +14,52 @@ const CSVStreamWriter = require('dw/io/CSVStreamWriter');
 */
 
 function processProfile(profile, csvStreamWriter) {
-    // const firstName = profile.firstName;
-    // const lastName = profile.lastName;
-    // const email = profile.email;
-    // const creationDate = profile.creationDate;
-    csvStreamWriter.writeNext([profile.firstName, profile.lastName, profile.email, profile.creationDate]);
-
+    const firstName = profile.firstName;
+    const lastName = profile.lastName;
+    const email = profile.email;
+    const creationDate = profile.creationDate;
+    csvStreamWriter.writeNext([firstName, lastName, email, creationDate]);
 };
+
+function sendFileToEmail(emails, csvURL) {
+    const emailHelpers = require('*/cartridge/scripts/helpers/emailHelpers');
+    const emailList = emails.split(',').map(function (str) { return str.trim() });
+
+    emailList.forEach(function (email, index) {
+        if (emailHelpers.validateEmail(email)) {
+            const emailParams = {
+                to: email,
+                subject: 'Customers of site_pnavrotskyi'
+            };
+            emailHelpers.send(emailParams, 'exportCustomers/listemail', { csvURL: csvURL });
+        } else {
+            const Logger = require('dw/system/Logger');
+            Logger.getLogger('export_customers').error('Invalid email number ' + index);
+        }
+    });
+};
+
+function transferToFTP(file, fileName) {
+    const ftp = new dw.net.FTPClient();
+    ftp.setTimeout(10000);
+    ftp.connect("ftp.dlptest.com", "dlpuser", "rNrKYTX9g7z3RgJRmxWuGHbeu");
+    const result = ftp.putBinary('/' + fileName, file);
+    ftp.disconnect();
+    if(result) {
+        file.remove()
+    }
+}
 
 
 
 function exportCustomers(parameters) {
     const startDate = parameters.startDate || 0;
     const endDate = parameters.endDate || new Date();
-    const emailRegexp = /^[\w.%+-]+@[\w.-]+\.[\w]{2,6}$/;
-    const email = parameters.email;
 
     const fileName = Date.now() + '_customersPNavrotskyi.csv';
+
     const file = new File('/IMPEX/src/ExportCustomers/' + fileName);
-    const link =  'https://' + System.getInstanceHostname() + '/on/demandware.servlet/webdav/Sites' + file.getFullPath();
+    const csvURL = 'https://' + System.getInstanceHostname() + '/on/demandware.servlet/webdav/Sites' + file.getFullPath();
     const fileWriter = new FileWriter(file);
     let csvStreamWriter = new CSVStreamWriter(fileWriter);
     csvStreamWriter.writeNext(['First Name', 'Last Name', 'Email', 'Creation Date']);
@@ -44,12 +71,10 @@ function exportCustomers(parameters) {
 
     csvStreamWriter.close();
 
-    if (emailRegexp.test(email)) {
-        dw.system.HookMgr.callHook('exportCustomers.email', 'send', [email, link]);
-    } else {
-        const Logger = require('dw/system/Logger');
-        Logger.getLogger('export_customers').error('Invalid email');
-    }
+    // transferToFTP(file, fileName); // I found free FTP test server, where you can upload files for 10 minutes. Therefore I choose deprecated FTP rather than SFTP
+
+    sendFileToEmail(parameters.email, csvURL)
+
 }
 
 module.exports = {
