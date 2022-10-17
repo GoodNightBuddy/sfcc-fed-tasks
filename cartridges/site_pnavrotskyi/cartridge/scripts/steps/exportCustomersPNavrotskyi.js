@@ -5,6 +5,7 @@ const File = require('dw/io/File');
 const System = require('dw/system/System');
 const FileWriter = require('dw/io/FileWriter');
 const CSVStreamWriter = require('dw/io/CSVStreamWriter');
+const URLUtils = require('dw/web/URLUtils');
 
 /**
 * @function exportCustomers
@@ -55,23 +56,24 @@ function transferToFTP(file, fileName) {
 function exportCustomers(parameters) {
     const startDate = parameters.startDate || 0;
     const endDate = parameters.endDate || new Date();
+    const isCustomer_pnavrotskyi = 'TRUE';
 
     const fileName = Date.now() + '_customersPNavrotskyi.csv';
 
-    const file = new File('/IMPEX/src/ExportCustomers/' + fileName);
-    const csvURL = 'https://' + System.getInstanceHostname() + '/on/demandware.servlet/webdav/Sites' + file.getFullPath();
+    const file = new File(File.IMPEX + File.SEPARATOR + 'src' + File.SEPARATOR + 'ExportCustomers' + File.SEPARATOR + fileName);
+    var URL = '/on/demandware.servlet/webdav/Sites' + file.getFullPath();
+    const csvURL = URLUtils.https(URL).toString().split('/on')[0] + URL;
     const fileWriter = new FileWriter(file);
     let csvStreamWriter = new CSVStreamWriter(fileWriter);
     csvStreamWriter.writeNext(['First Name', 'Last Name', 'Email', 'Creation Date']);
 
     CustomerMgr.processProfiles(function (profile) {
         processProfile(profile, csvStreamWriter);
-    }, 'custom.isCustomer_pnavrotskyi = TRUE AND creationDate > {0} AND creationDate < {1}', startDate, endDate);
-
+    }, 'custom.isCustomer_pnavrotskyi = {0} AND creationDate > {1} AND creationDate < {2}', isCustomer_pnavrotskyi, startDate, endDate);
 
     csvStreamWriter.close();
 
-    // transferToFTP(file, fileName); // I found free FTP test server, where you can upload files for 10 minutes. Therefore I choose deprecated FTP rather than SFTP
+    // transferToFTP(file, fileName); // I found free FTP test server, where you can upload files for 10 minutes without download or sms and registration). Therefore I choose deprecated FTP rather than SFTP.
 
     sendFileToEmail(parameters.email, csvURL)
 

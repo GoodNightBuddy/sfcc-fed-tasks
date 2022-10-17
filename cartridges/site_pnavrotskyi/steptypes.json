@@ -47,7 +47,7 @@
                 "description": "This script filtered customers and export them into .csv file.",
                 "module": "site_pnavrotskyi/cartridge/scripts/steps/exportCustomersPNavrotskyi.js",
                 "function": "exportCustomers",
-                "transactional": "true",
+                "transactional": "false",
                 "timeout-in-seconds": "900",
                 "parameters": {
                     "parameters": [
