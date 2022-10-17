@@ -61,7 +61,7 @@ function exportCustomers(parameters) {
     const fileName = Date.now() + '_customersPNavrotskyi.csv';
 
     const file = new File(File.IMPEX + File.SEPARATOR + 'src' + File.SEPARATOR + 'ExportCustomers' + File.SEPARATOR + fileName);
-    var URL = '/on/demandware.servlet/webdav/Sites' + file.getFullPath();
+    const URL = '/on/demandware.servlet/webdav/Sites' + file.getFullPath();
     const csvURL = URLUtils.https(URL).toString().split('/on')[0] + URL;
     const fileWriter = new FileWriter(file);
     let csvStreamWriter = new CSVStreamWriter(fileWriter);
