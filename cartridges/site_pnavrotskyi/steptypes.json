@@ -59,7 +59,7 @@
                         },
 
                         {
-                            "@name": "endtDate",
+                            "@name": "endDate",
                             "@type": "datetime-string",
                             "@required": "false",
                             "description": "Search query as a creationDate attribute in customers profile"
