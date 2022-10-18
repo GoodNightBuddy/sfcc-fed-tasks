@@ -6,7 +6,7 @@ const System = require('dw/system/System');
 const FileWriter = require('dw/io/FileWriter');
 const CSVStreamWriter = require('dw/io/CSVStreamWriter');
 const URLUtils = require('dw/web/URLUtils');
-
+const Logger = require('dw/system/Logger');
 /**
 * @function exportCustomers
 * @description This script filtered customers and export them into .csv file.
@@ -26,7 +26,7 @@ function sendFileToEmail(emails, csvURL) {
     const emailHelpers = require('*/cartridge/scripts/helpers/emailHelpers');
     const emailList = emails.split(',').map(function (str) { return str.trim() });
 
-    emailList.forEach(function (email, index) {
+    emailList.forEach(function (email) {
         if (emailHelpers.validateEmail(email)) {
             const emailParams = {
                 to: email,
@@ -34,8 +34,7 @@ function sendFileToEmail(emails, csvURL) {
             };
             emailHelpers.send(emailParams, 'exportCustomers/listemail', { csvURL: csvURL });
         } else {
-            const Logger = require('dw/system/Logger');
-            Logger.getLogger('export_customers').error('Invalid email number ' + index);
+            Logger.getLogger('export_customers').error('Email is invalid: ' + email);
         }
     });
 };
@@ -61,8 +60,6 @@ function exportCustomers(parameters) {
     const fileName = Date.now() + '_customersPNavrotskyi.csv';
 
     const file = new File(File.IMPEX + File.SEPARATOR + 'src' + File.SEPARATOR + 'ExportCustomers' + File.SEPARATOR + fileName);
-    const URL = '/on/demandware.servlet/webdav/Sites' + file.getFullPath();
-    const csvURL = URLUtils.https(URL).toString().split('/on')[0] + URL;
     const fileWriter = new FileWriter(file);
     let csvStreamWriter = new CSVStreamWriter(fileWriter);
     csvStreamWriter.writeNext(['First Name', 'Last Name', 'Email', 'Creation Date']);
@@ -74,6 +71,9 @@ function exportCustomers(parameters) {
     csvStreamWriter.close();
 
     // transferToFTP(file, fileName); // I found free FTP test server, where you can upload files for 10 minutes without download or sms and registration). Therefore I choose deprecated FTP rather than SFTP.
+
+    const URL = '/on/demandware.servlet/webdav/Sites' + file.getFullPath();
+    const csvURL = URLUtils.https(URL).toString().split('/on')[0] + URL;
 
     sendFileToEmail(parameters.email, csvURL)
 
