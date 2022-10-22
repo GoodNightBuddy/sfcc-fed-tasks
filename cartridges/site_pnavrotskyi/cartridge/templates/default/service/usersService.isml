@@ -1,0 +1,36 @@
+<isdecorate template="common/layout/page">
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets.js');
+    </isscript>
+    <h1>卐 Siege Hail 卐</h1>
+
+    <div class="container-fluid">
+        <isif condition="${pdict.users}">
+            <div class="row">
+                <isloop items="${pdict.users}" var="user" status="loopstatus">
+
+                    <div class="col-6 col-sm-3 col-lg-2 text-center m-0">
+                        <img src="${user.avatar}" alt="">
+                        <p class="m-0">${user.first_name} ${user.last_name}</p>
+                        <p class="m-0">Email: ${user.email}</p>
+                    </div>
+
+                </isloop>
+            </div>
+
+            <div class="row d-block text-center">
+                <button type="button" class="btn btn-primary m-1">Show more</button>
+            </div>
+        <iselse/>
+            <div class="row d-flex justify-content-center">
+                <div class="alert alert-primary" role="alert">
+                    Sorry, but users tab is disabled
+                </div>
+            </div>
+        </isif>
+
+
+
+    </div>
+
+</isdecorate>
