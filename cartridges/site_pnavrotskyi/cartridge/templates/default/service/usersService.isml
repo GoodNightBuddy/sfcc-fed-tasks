@@ -1,25 +1,47 @@
 <isdecorate template="common/layout/page">
     <isscript>
         var assets = require('*/cartridge/scripts/assets.js');
+        assets.addJs('/js/usersservice.js');
     </isscript>
     <h1>卐 Siege Hail 卐</h1>
+    <style>
+        .img-block {
+            width: 128px;
+            height: 128px;
+        }
 
+        img {
+            object-fit: cover;
+        }
+
+        p {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    </style>
     <div class="container-fluid">
         <isif condition="${pdict.users}">
-            <div class="row">
+            <div class="row" id="users-list">
                 <isloop items="${pdict.users}" var="user" status="loopstatus">
 
-                    <div class="col-6 col-sm-3 col-lg-2 text-center m-0">
-                        <img src="${user.avatar}" alt="">
-                        <p class="m-0">${user.first_name} ${user.last_name}</p>
-                        <p class="m-0">Email: ${user.email}</p>
+
+
+                    <div class="col-6 col-sm-3 col-lg-2 text-center mb-2 px-1"  id="user-info">
+                        <div class="m-auto img-block">
+                            <img src="${user.avatar}" class="w-100 h-100" alt="user avatar" id="user-avatar">
+                        </div>
+                        <p class="m-0" id="user-name">${user.first_name} ${user.last_name}</p>
+                        <p class="m-0" id="user-email">${user.email}</p>
                     </div>
 
                 </isloop>
             </div>
 
             <div class="row d-block text-center">
-                <button type="button" class="btn btn-primary m-1">Show more</button>
+                <button type="button" class="btn btn-primary m-1" data-url="${pdict.getUsersURL}" id="show-more-button">
+                    Show more
+                </button>
             </div>
         <iselse/>
             <div class="row d-flex justify-content-center">
@@ -28,9 +50,6 @@
                 </div>
             </div>
         </isif>
-
-
-
     </div>
 
 </isdecorate>

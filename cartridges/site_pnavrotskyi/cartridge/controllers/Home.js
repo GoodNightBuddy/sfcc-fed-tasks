@@ -1,9 +1,11 @@
 'use strict';
 
 var server = require('server');
+var Site = require('dw/system/Site').getCurrent();
+var Logger = require('dw/system/Logger');
+var Resource = require('dw/web/Resource');
+var URLUtils = require('dw/web/URLUtils');
 var cache = require('*/cartridge/scripts/middleware/cache');
-var usersService = require('*/cartridge/scripts/service/usersservice');
-var Site = require('dw/system/Site');
 server.extend(module.superModule);
 
 /**
@@ -31,20 +33,67 @@ server.append('Show', cache.applyCustomCache, function (req, res, next) {
 });
 
 server.get('Users', cache.applyCustomCache, function (req, res, next) {
+    try {
+        var usersService = require('*/cartridge/scripts/service/usersservice');
+        var enableUsersTab = Site.getCustomPreferenceValue('EnableUsersTabPNavrotskyi');
+        var getUsersURL = null;
+        var users = null;
+        if (enableUsersTab) {
+            var service = usersService.getUsersService();
+            service.setURL(Site.getCustomPreferenceValue('GetUsersURLPNavrotskyi') + 1);
 
-    var enableUsersTab = Site.getCurrent().preferences.custom.EnableUsersTabPNavrotskyi;
-    var users;
-    if (enableUsersTab) {
-        var service = usersService.initUsersService();
-        var responseString = service.call().object.text;
-        var response = JSON.parse(responseString);
-        users = response.data;
-    } else {
-        users = null;
+            var response = service.call();
+            users = response.object.data;
+            getUsersURL = Site.getCustomPreferenceValue('GetUsersURLPNavrotskyi');
+        }
+        res.render('service/usersService', { users: users, getUsersURL: getUsersURL });
+    } catch (error) {
+        Logger.getLogger('UsersServicePNavrotskyi').error('Request call is not successfull...');
+        res.setStatusCode(500);
+        res.render('error', {
+            error: req.error || {},
+            showError: true,
+            message: Resource.msg('subheading.error.general', 'error', null)
+        });
     }
-    res.render('service/usersService', { users: users });
+
     next();
 });
+
+// server.get('Users', cache.applyCustomCache, function (req, res, next) {
+//     try {
+//         var usersService = require('*/cartridge/scripts/service/usersservice');
+//         var enableUsersTab = Site.getCustomPreferenceValue('EnableUsersTabPNavrotskyi');
+//         var getUsersURL = null;
+//         var users = null;
+//         var data = null;
+//         var page = req.querystring.page || 1;
+//         if (enableUsersTab) {
+//             var service = usersService.getUsersService();
+//             service.setURL(Site.getCustomPreferenceValue('GetUsersURLPNavrotskyi') + page);
+
+//             var response = service.call();
+//             data = response.object;
+//             users = data.data;
+//             getUsersURL = URLUtils.https('Home-Users', 'page');
+//         }
+//         if (page > 1) {
+//             res.json({ data: data });
+//         } else {
+//             res.render('service/usersService', { users: users, getUsersURL: getUsersURL });
+//         }
+//     } catch (error) {
+//         Logger.getLogger('UsersServicePNavrotskyi').error('Request call is not successfull...');
+//         res.setStatusCode(500);
+//         res.render('error', {
+//             error: req.error || {},
+//             showError: true,
+//             message: Resource.msg('subheading.error.general', 'error', null)
+//         });
+//     }
+
+//     next();
+// });
 
 // server.replace('Show', cache.applyCustomCache, function (req, res, next) {
 //     var viewData = res.getViewData();

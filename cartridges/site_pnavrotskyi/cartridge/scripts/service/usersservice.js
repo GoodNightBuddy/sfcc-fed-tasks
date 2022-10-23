@@ -1,4 +1,6 @@
 var LocalServiceRegistry = require('dw/svc/LocalServiceRegistry');
+var Logger = require('dw/system/Logger');
+
 /**
  * Users
  * @returns {Object} Users Service
@@ -12,23 +14,23 @@ function getUsersService() {
             return svc;
         },
         parseResponse: function (svc, output) {
-            return output;
+            try {
+                var parsedResponse = JSON.parse(output.text);
+                if (!parsedResponse.page || !parsedResponse.total_pages || !parsedResponse.data) {
+                    throw new Error();
+                }
+                return parsedResponse;
+            } catch (error) {
+                Logger.getLogger('UsersServicePNavrotskyi').error('Request call is not successfull...');
+                return null;
+            }
         },
         getRequestLogMessage: function (reqObj) {
             return reqObj;
         }
     });
+    usersService.setRequestMethod('GET');
     return usersService;
 }
 
-module.exports = {
-    /**
-     * @returns {Object} Users Service
-     */
-    initUsersService: function () {
-        var usersService = getUsersService();
-        usersService.setRequestMethod('GET');
-        usersService.setURL(usersService.getURL() + '/api/users?page=1');
-        return usersService;
-    }
-};
+module.exports = { getUsersService: getUsersService };
