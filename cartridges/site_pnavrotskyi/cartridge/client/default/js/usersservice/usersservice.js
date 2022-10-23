@@ -3,10 +3,10 @@
 module.exports = {
     showMoreUsers: function () {
         var page = 2;
-        $('.show-more-button').on('click', function () {
-            var $usersList = $('div.users-list');
+        $('#show-more-button').on('click', function () {
+            var $usersList = $('#users-list');
             $.spinner().start();
-            var getUsersURL = $('.show-more-button').attr('data-url') + page;
+            var getUsersURL = $('#show-more-button').attr('data-url') + page;
             page++;
             $.ajax({
                 url: getUsersURL,
@@ -15,7 +15,7 @@ module.exports = {
                 success: function (data) {
                     var users = data.data;
                     if (data.page === data.total_pages) {
-                        $('.show-more-button').prop('disabled', true);
+                        $('#show-more-button').prop('disabled', true);
                     }
                     if (users) {
                         users.forEach(user => {
