@@ -3,7 +3,6 @@
         var assets = require('*/cartridge/scripts/assets.js');
         assets.addJs('/js/usersservice.js');
     </isscript>
-    <h1>卐 Siege Hail 卐</h1>
     <style>
         .img-block {
             width: 128px;
@@ -21,27 +20,42 @@
         }
     </style>
     <div class="container-fluid">
-        <isif condition="${pdict.users}">
-            <div class="row" id="users-list">
-                <isloop items="${pdict.users}" var="user" status="loopstatus">
+        <isif condition="${pdict.data}">
+            <div class="row mt-1" id="users-list">
 
-
-
-                    <div class="col-6 col-sm-3 col-lg-2 text-center mb-2 px-1"  id="user-info">
-                        <div class="m-auto img-block">
-                            <img src="${user.avatar}" class="w-100 h-100" alt="user avatar" id="user-avatar">
-                        </div>
-                        <p class="m-0" id="user-name">${user.first_name} ${user.last_name}</p>
-                        <p class="m-0" id="user-email">${user.email}</p>
+                <isif condition="${pdict.data.data.length === 0}">
+                    <div class="alert alert-primary w-100 mx-2" role="alert">
+                        No users found...
                     </div>
+                <iselse/>
+                    <isloop items="${pdict.data.data}" var="user" status="loopstatus">
 
-                </isloop>
+                        <div class="col-6 col-sm-3 col-lg-2 text-center mb-2 px-1" id="user-info">
+                            <div class="m-auto img-block">
+                                <img src="${user.avatar}" class="w-100 h-100" alt="user avatar" id="user-avatar">
+                            </div>
+                            <p class="m-0" id="user-name">${user.first_name} ${user.last_name}</p>
+                            <p class="m-0" id="user-email">${user.email}</p>
+                        </div>
+
+                    </isloop>
+                </isif>
+
+
             </div>
 
             <div class="row d-block text-center">
-                <button type="button" class="btn btn-primary m-1" data-url="${pdict.getUsersURL}" id="show-more-button">
-                    Show more
-                </button>
+                <isif condition="${pdict.data.page === pdict.data.total_pages || pdict.data.data.length === 0}">
+                    <button type="button" class="btn btn-primary m-1" disabled>
+                        Show more
+                    </button>
+                <iselse/>
+                    <button type="button" class="btn btn-primary m-1" data-url="${pdict.getUsersURL}"
+                        id="show-more-button">
+                        Show more
+                    </button>
+                </isif>
+
             </div>
         <iselse/>
             <div class="row d-flex justify-content-center">

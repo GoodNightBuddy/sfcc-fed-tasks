@@ -1,17 +1,17 @@
 var LocalServiceRegistry = require('dw/svc/LocalServiceRegistry');
 var Logger = require('dw/system/Logger');
+var Site = require('dw/system/Site').getCurrent();
 
 /**
  * Users
  * @returns {Object} Users Service
  */
-function getUsersService() {
+function getUsersService(page) {
     var usersService = LocalServiceRegistry.createService('UsersServicePNavrotskyi', {
         createRequest: function (svc, args) {
-            if (svc.getRequestMethod() === 'GET') {
-                return JSON.stringify(args);
-            }
-            return svc;
+            svc.setRequestMethod('GET');
+            svc.setURL(Site.getCustomPreferenceValue('GetUsersURLPNavrotskyi') + page);
+            return JSON.stringify(args);
         },
         parseResponse: function (svc, output) {
             try {
@@ -29,7 +29,6 @@ function getUsersService() {
             return reqObj;
         }
     });
-    usersService.setRequestMethod('GET');
     return usersService;
 }
 

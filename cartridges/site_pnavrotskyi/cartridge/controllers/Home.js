@@ -32,23 +32,25 @@ server.append('Show', cache.applyCustomCache, function (req, res, next) {
     next();
 });
 
-// I realize this task with 2 cases. Because due to exercise I might realize show more function via ajax directly to the reqres.in. But, in my humble opinion, it more logical to get users via already existig service. It has commented route and commented jquery code. And I hope, my valiant mentor will clarify wich way is better:)
 
 server.get('Users', cache.applyCustomCache, function (req, res, next) {
     try {
         var usersService = require('*/cartridge/scripts/service/usersservice');
         var enableUsersTab = Site.getCustomPreferenceValue('EnableUsersTabPNavrotskyi');
         var getUsersURL = null;
-        var users = null;
+        var data = null;
+        var page = req.querystring.page || 1;
         if (enableUsersTab) {
-            var service = usersService.getUsersService();
-            service.setURL(Site.getCustomPreferenceValue('GetUsersURLPNavrotskyi') + 1);
-
+            var service = usersService.getUsersService(page);
             var response = service.call();
-            users = response.object.data;
-            getUsersURL = Site.getCustomPreferenceValue('GetUsersURLPNavrotskyi');
+            data = response.object;
+            getUsersURL = URLUtils.https('Home-Users', 'page', +page + 1).toString();
         }
-        res.render('service/usersService', { users: users, getUsersURL: getUsersURL });
+        if (page > 1) {
+            res.json({ data: data, getUsersURL: getUsersURL });
+        } else {
+            res.render('service/usersService', { data: data, getUsersURL: getUsersURL });
+        }
     } catch (error) {
         Logger.getLogger('UsersServicePNavrotskyi').error('Request call is not successfull...');
         res.setStatusCode(500);
@@ -61,44 +63,6 @@ server.get('Users', cache.applyCustomCache, function (req, res, next) {
 
     next();
 });
-
-
-// The variant below is for the realization via ajax to usersservice. It also have commented jquery code
-
-// server.get('Users', cache.applyCustomCache, function (req, res, next) {
-//     try {
-//         var usersService = require('*/cartridge/scripts/service/usersservice');
-//         var enableUsersTab = Site.getCustomPreferenceValue('EnableUsersTabPNavrotskyi');
-//         var getUsersURL = null;
-//         var users = null;
-//         var data = null;
-//         var page = req.querystring.page || 1;
-//         if (enableUsersTab) {
-//             var service = usersService.getUsersService();
-//             service.setURL(Site.getCustomPreferenceValue('GetUsersURLPNavrotskyi') + page);
-
-//             var response = service.call();
-//             data = response.object;
-//             users = data.data;
-//             getUsersURL = URLUtils.https('Home-Users', 'page');
-//         }
-//         if (page > 1) {
-//             res.json({ data: data });
-//         } else {
-//             res.render('service/usersService', { users: users, getUsersURL: getUsersURL });
-//         }
-//     } catch (error) {
-//         Logger.getLogger('UsersServicePNavrotskyi').error('Request call is not successfull...');
-//         res.setStatusCode(500);
-//         res.render('error', {
-//             error: req.error || {},
-//             showError: true,
-//             message: Resource.msg('subheading.error.general', 'error', null)
-//         });
-//     }
-
-//     next();
-// });
 
 // server.replace('Show', cache.applyCustomCache, function (req, res, next) {
 //     var viewData = res.getViewData();
