@@ -32,6 +32,8 @@ server.append('Show', cache.applyCustomCache, function (req, res, next) {
     next();
 });
 
+// I realize this task with 2 cases. Because due to exercise I might realize show more function via ajax directly to the reqres.in. But, in my humble opinion, it more logical to get users via already existig service. It has commented route and commented jquery code. And I hope, my valiant mentor will clarify wich way is better:)
+
 server.get('Users', cache.applyCustomCache, function (req, res, next) {
     try {
         var usersService = require('*/cartridge/scripts/service/usersservice');
@@ -59,6 +61,9 @@ server.get('Users', cache.applyCustomCache, function (req, res, next) {
 
     next();
 });
+
+
+// The variant below is for the realization via ajax to usersservice. It also have commented jquery code
 
 // server.get('Users', cache.applyCustomCache, function (req, res, next) {
 //     try {

@@ -1,5 +1,7 @@
 'use strict';
 
+// I realize this task with 2 cases. Because due to exercise I might realize show more function via ajax directly to the reqres.in. But, in my humble opinion, it more logical to get users via already existig service. It has commented route and commented jquery code. And I hope, my valiant mentor will clarify wich way is better:)
+
 module.exports = {
     showMoreUsers: function () {
         var page = 2;
@@ -27,6 +29,7 @@ module.exports = {
                                 <p class="m-0">${user.first_name} ${user.last_name}</p>
                                 <p class="m-0">${user.email}</p>
                             </div>`);
+                            // I think, render users in second variant is little better
                         });
                     }
                     $.spinner().stop();
@@ -48,6 +51,7 @@ module.exports = {
     }
 };
 
+// The case below is for the get users via usersservice. And its render users for another way, which a little better, isn't it?)
 
 // module.exports = {
 //     showMoreUsers: function () {
