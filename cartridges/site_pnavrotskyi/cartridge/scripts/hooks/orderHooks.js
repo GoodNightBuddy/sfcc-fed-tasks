@@ -1,28 +1,40 @@
+var Mail = require('dw/net/Mail');
+var Logger = require('dw/system/Logger');
 var Status = require('dw/system/Status');
+var Site = require('dw/system/Site').getCurrent();
 var Transaction = require('dw/system/Transaction');
 var CustomObjectMgr = require('dw/object/CustomObjectMgr');
 
 function beforePATCH(order, orderInput) {
     try {
         if (+orderInput.c_PNavrotskyiStatus === 1) {
-            var emailHelpers = require('*/cartridge/scripts/helpers/emailHelpers');
-            var email = order.getCustomerEmail();
             var info = order.getCreationDate() + '\nTotal Price: ' + order.getTotalNetPrice() + '$\nTotal Tax: ' + order.getTotalTax() + '$\nTotal Shipping Cost: ' + order.getShippingTotalPrice() + '$';
-            var emailParams = {
-                to: email,
-                subject: 'Canceled order'
-            };
+            var email = order.getCustomerEmail();
+            if (email) {
+                var mail = new Mail();
+                mail.addTo(email);
+                mail.setFrom(Site.getCustomPreferenceValue('customerServiceEmail'));
+                mail.setSubject('Canceled order');
+                mail.setContent(info);
+                mail.send();
+            } else {
+                // some logic if customer not registered
+            }
 
-            emailHelpers.send(emailParams, info);
+
+            // var emailHelpers = require('*/cartridge/scripts/helpers/emailHelpers');
+            // var emailParams = {
+            //     to: email,
+            //     subject: 'Canceled order'
+            // };
+            // emailHelpers.send(emailParams, info);
 
         }
     } catch (error) {
+        Logger.getLogger('orderHook_beforePATCH').error(error.message);
         return new Status(Status.ERROR, error.message);
     }
 
-    if (!orderInput.c_PNavrotskyiStatus) {
-        return new Status(Status.ERROR, 'error');
-    }
     return new Status(Status.OK);
 }
 
@@ -42,6 +54,7 @@ function afterPATCH(order, orderInput) {
         }
 
     } catch (error) {
+        Logger.getLogger('orderHook_beforePATCH').error(error.message);
         return new Status(Status.ERROR, error.message);
     }
 
