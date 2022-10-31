@@ -1,11 +1,4 @@
-<isdecorate template="common/layout/page">
-    <isscript>
-        var assets = require('*/cartridge/scripts/assets.js');
-        assets.addCss('/css/account/orderTrack.css');
-        assets.addCss('/css/account/profile.css');
-    </isscript>
-
-
+<iscomment>
     <div class="container receipt">
         <div class="row justify-content-center">
             <div class="col-sm-8 col-md-6">
@@ -14,7 +7,7 @@
                         <h2 class="card-header-custom">${Resource.msg('title.receipt', 'confirmation', null)}</h2>
                     </div>
 
-                 
+
                 </div>
 
                 <isinclude template="checkout/orderProductSummary" />
@@ -28,4 +21,21 @@
             </div>
         </div>
     </div>
-</isdecorate>
+</iscomment>
+
+<isloop items="${pdict.order.shipping}" var="shippingModel">
+
+    <isloop items="${shippingModel.productLineItems.items}" var="lineItem">
+        <isinclude template="checkout/productCard/productCard" />
+        <div class="item-image">
+                <img class="product-image"
+                    src="${lineItem.images.small[0].url}"
+                    alt="${lineItem.images.small[0].alt}"
+                    title="${lineItem.images.small[0].title}">
+            </div>
+    </isloop>
+
+    <isif condition="${pdict.order.shipping.length > 1}">
+        <isinclude template="checkout/shipping/shippingCard" />
+    </isif>
+</isloop>
