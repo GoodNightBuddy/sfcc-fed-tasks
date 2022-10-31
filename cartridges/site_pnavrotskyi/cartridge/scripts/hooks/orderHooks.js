@@ -15,11 +15,8 @@ function beforePATCH(order, orderInput) {
                 var productsInfo = 'Your order contains: \n';
 
                 collections.forEach(products, function (product, i) {
-                    var separator = ',\n';
-                    if (i === products.length - 1) {
-                        separator = '.';
-                    }
-                    productsInfo += product.getProductName() + ' in quantity: ' + product.quantityValue + separator;
+                    var separator = products.length - 1 === i ? '.' : ',\n';
+                    productsInfo += product.getProductName() + ' in quantity: ' + product.quantity + separator;
                 });
 
                 var orderInfo = productsInfo + '\nOrder information:' +
