@@ -46,21 +46,21 @@ function beforePATCH(order, orderInput) {
 }
 
 function afterPATCH(order, orderInput) {
-    try {
-        if (+orderInput.c_PNavrotskyiStatus === 1) {
-            Transaction.wrap(function () {
-                var co = CustomObjectMgr.createCustomObject('PNavrotskyiRefunds', order.UUID);
-                co.custom.orderNo = order.getOrderNo();
-                co.custom.paymentToken = order.getOrderToken();
-                co.custom.customerNumber = order.getCustomerNo();
-                co.custom.totalRefund = +order.getTotalGrossPrice();
-            });
-        }
-        return new Status(Status.OK);
-    } catch (error) {
-        Logger.getLogger('orderHook_beforePATCH').error(error.toString());
-        return new Status(Status.ERROR, error.toString());
-    }
+    // try {
+    //     if (+orderInput.c_PNavrotskyiStatus === 1) {
+    //         Transaction.wrap(function () {
+    //             var co = CustomObjectMgr.createCustomObject('PNavrotskyiRefunds', order.UUID);
+    //             co.custom.orderNo = order.getOrderNo();
+    //             co.custom.paymentToken = order.getOrderToken();
+    //             co.custom.customerNumber = order.getCustomerNo();
+    //             co.custom.totalRefund = +order.getTotalGrossPrice();
+    //         });
+    //     }
+    //     return new Status(Status.OK);
+    // } catch (error) {
+    //     Logger.getLogger('orderHook_beforePATCH').error(error.toString());
+    //     return new Status(Status.ERROR, error.toString());
+    // }
 
 }
 
