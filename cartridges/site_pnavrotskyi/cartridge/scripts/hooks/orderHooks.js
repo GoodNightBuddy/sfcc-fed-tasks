@@ -1,36 +1,29 @@
-var Mail = require('dw/net/Mail');
 var Logger = require('dw/system/Logger');
 var Status = require('dw/system/Status');
-var Site = require('dw/system/Site').getCurrent();
 var Transaction = require('dw/system/Transaction');
 var CustomObjectMgr = require('dw/object/CustomObjectMgr');
-var collections = require('*/cartridge/scripts/util/collections');
 
 function beforePATCH(order, orderInput) {
     try {
         if (+orderInput.c_PNavrotskyiStatus === 1) {
+            if (+order.custom.PNavrotskyiStatus === 1) throw new Error('Order already canceled');
+
             var email = order.getCustomerEmail();
             if (email) {
-                var products = order.getProductLineItems();
-                var productsInfo = 'Your order contains: \n';
+                var emailHelpers = require('*/cartridge/scripts/helpers/emailHelpers');
+                var OrderModel = require('*/cartridge/models/order');
 
-                collections.forEach(products, function (product, i) {
-                    var separator = products.length - 1 === i ? '.' : ',\n';
-                    productsInfo += product.getProductName() + ' in quantity: ' + product.quantity + separator;
-                });
+                var orderModel = new OrderModel(
+                    order,
+                    { config: { numberOfLineItems: '*' }, containerView: 'order' }
+                );
 
-                var orderInfo = productsInfo + '\nOrder information:' +
-                '\nCreation Date: ' + order.getCreationDate() +
-                '\nTotal Tax: ' + order.getTotalTax() + '$' +
-                '\nTotal Shipping Cost: ' + order.getShippingTotalPrice() + '$' +
-                '\nTotal Price: ' + order.getTotalGrossPrice() + '$';
+                var emailParams = {
+                    to: email,
+                    subject: 'Canceled order'
+                };
 
-                var mail = new Mail();
-                mail.addTo(order.getCustomerEmail());
-                mail.setFrom(Site.getCustomPreferenceValue('customerServiceEmail'));
-                mail.setSubject('Canceled order information');
-                mail.setContent(orderInfo);
-                mail.send();
+                emailHelpers.send(emailParams, 'order/cancelOrder', { order: orderModel });
             }
         }
         return new Status(Status.OK);
