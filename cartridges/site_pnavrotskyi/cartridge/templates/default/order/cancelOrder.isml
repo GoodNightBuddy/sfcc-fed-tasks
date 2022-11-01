@@ -3,7 +3,7 @@
     <div>Creationdate: ${pdict.order.creationDate}</div>
     <br>
     <isloop items="${pdict.order.items.items}" var="item">
-        <span>	${Resource.msg('table.header.product.name', 'order', null)}</span>
+        <span>Your order included:</span>
         <div>Item № ${item.id}</div>
         <div>${item.productName} in quantity ${item.quantity.toString().split('.')[0]}</div>
         <div>Price: ${item.priceTotal.price}</div>
