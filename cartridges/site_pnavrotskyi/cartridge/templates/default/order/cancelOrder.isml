@@ -3,9 +3,9 @@
     <div>Creationdate: ${pdict.order.creationDate}</div>
     <br>
     <isloop items="${pdict.order.items.items}" var="item">
-        <span>Your order included:</span>
+        <span>	${Resource.msg('table.header.product.name', 'order', null)}</span>
         <div>Item № ${item.id}</div>
-        <div>${item.productName} in quantity ${item.quantity}</div>
+        <div>${item.productName} in quantity ${item.quantity.toString().split('.')[0]}</div>
         <div>Price: ${item.priceTotal.price}</div>
         <img src="${item.images.small[0].absURL}"
             alt="${item.images.small[0].alt}"
@@ -17,7 +17,7 @@
     <div>Shipping: ${pdict.order.totals.totalShippingCost}</div>
     <div>Taxes: ${pdict.order.totals.totalTax}</div>
     <div>Total: ${pdict.order.totals.grandTotal}</div>
-
+    <br>
     <a href="${URLUtils.home()}">Continue shopping</a>
 
 <iselse/>

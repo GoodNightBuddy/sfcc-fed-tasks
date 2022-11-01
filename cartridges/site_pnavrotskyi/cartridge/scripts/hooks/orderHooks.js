@@ -6,7 +6,7 @@ var CustomObjectMgr = require('dw/object/CustomObjectMgr');
 function beforePATCH(order, orderInput) {
     try {
         if (+orderInput.c_status === 1) {
-            if (+order.custom.PNavrotskyiStatus === 1) throw new Error('Order already canceled');
+            // if (+order.custom.PNavrotskyiStatus === 1) throw new Error('Order already canceled');
             var email = order.getCustomerEmail();
             if (email) {
                 var emailHelpers = require('*/cartridge/scripts/helpers/emailHelpers');
@@ -34,24 +34,24 @@ function beforePATCH(order, orderInput) {
 }
 
 function afterPATCH(order, orderInput) {
-    try {
-        // if (+orderInput.c_PNavrotskyiStatus === 1) {
-            Transaction.wrap(function () {
-                order.custom.PNavrotskyiStatus = orderInput.c_status;
-                order.custom.PNavrotskyiCancelReason = orderInput.c_note;
+    // try {
+    //     if (+orderInput.c_PNavrotskyiStatus === 1) {
+    //         Transaction.wrap(function () {
+    //             order.custom.PNavrotskyiStatus = orderInput.c_status;
+    //             order.custom.PNavrotskyiCancelReason = orderInput.c_note;
 
-                // var co = CustomObjectMgr.createCustomObject('PNavrotskyiRefunds', order.UUID);
-                // co.custom.orderNo = order.getOrderNo();
-                // co.custom.paymentToken = order.getOrderToken();
-                // co.custom.customerNumber = order.getCustomerNo();
-                // co.custom.totalRefund = +order.getTotalGrossPrice();
-            });
-        // }
-        return new Status(Status.OK);
-    } catch (error) {
-        Logger.getLogger('orderHook_beforePATCH').error(error.toString());
-        return new Status(Status.ERROR, error.toString());
-    }
+    //             var co = CustomObjectMgr.createCustomObject('PNavrotskyiRefunds', order.UUID);
+    //             co.custom.orderNo = order.getOrderNo();
+    //             co.custom.paymentToken = order.getOrderToken();
+    //             co.custom.customerNumber = order.getCustomerNo();
+    //             co.custom.totalRefund = +order.getTotalGrossPrice();
+    //         });
+    //     }
+    //     return new Status(Status.OK);
+    // } catch (error) {
+    //     Logger.getLogger('orderHook_beforePATCH').error(error.toString());
+    //     return new Status(Status.ERROR, error.toString());
+    // }
 }
 
 exports.beforePATCH = beforePATCH;
