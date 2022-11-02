@@ -3,6 +3,16 @@
         {
             "name": "newsletter.email",
             "script": "./cartridge/scripts/hooks/newsletterEmail.js"
+        },
+
+        {
+            "name": "dw.ocapi.shop.order.beforePATCH",
+            "script": "./cartridge/scripts/hooks/orderHooks.js"
+        },
+
+        {
+            "name": "dw.ocapi.shop.order.afterPATCH",
+            "script": "./cartridge/scripts/hooks/orderHooks.js"
         }
     ]
 }
