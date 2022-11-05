@@ -1,0 +1,15 @@
+<isdecorate template="common/layout/page">
+
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets');
+        assets.addCss('/css/search.css');
+    </isscript>
+
+    <isslot
+        id="test-slot"
+        context="category"
+        description="Test slot"
+        context-object="${pdict.category}"
+    />
+
+</isdecorate>

@@ -1,0 +1,7 @@
+<isif condition="${slotcontent != null}">
+    <comment> Then it loops through the slotcontent.content (the content provided for the slot): </comment>
+    <isloop items="${slotcontent.content}" var="markupText">
+        <comment> Inside the loop the code uses the <isprint> tag: </comment>
+        <isprint value="${markupText.markup}" encoding="off" />
+    </isloop>
+</isif>
