@@ -3,6 +3,7 @@
     <isscript>
         var assets = require('*/cartridge/scripts/assets');
         assets.addJs('/js/productDetail.js');
+        assets.addJs('/js/dataLayer.js');
         assets.addCss('/css/product/detail.css');
     </isscript>
 
@@ -10,7 +11,6 @@
     <isset name="isQuickView" value="${false}" scope="page" />
     <isset name="isProductSet" value="${pdict.product.productType === 'set'}" scope="page" />
     <isobject object="${product.raw}" view="detail" />
-    <h1>${product.dataLayer}</h1>
         <div class="container product-detail product-wrapper"
             data-pid="${product.id}" data-datalayer="${JSON.stringify(product.dataLayer)}">
             <div class="row">
