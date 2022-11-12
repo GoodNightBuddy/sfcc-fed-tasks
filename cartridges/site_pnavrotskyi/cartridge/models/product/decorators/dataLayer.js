@@ -3,7 +3,6 @@
 var priceFactory = require('*/cartridge/scripts/factories/price');
 
 function createDataLayerObj(apiProduct) {
-
     return {
         currencyCode: priceFactory.getPrice(apiProduct, null).sales.currency,
         name: apiProduct.getName(),
@@ -17,7 +16,7 @@ function createDataLayerObj(apiProduct) {
 module.exports = function (object, apiProduct) {
     Object.defineProperty(object, 'dataLayer', {
         enumerable: true,
-        value: createDataLayerObj(apiProduct)
+        value: JSON.stringify(createDataLayerObj(apiProduct))
     });
 };
 

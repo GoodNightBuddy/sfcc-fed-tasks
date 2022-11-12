@@ -48,7 +48,7 @@ module.exports = function productTile(product, apiProduct, productType) {
     }
 
     decorators.searchVariationAttributes(product, productSearchHit);
-    decorators.dataLayer(product, apiProduct);
+    // decorators.dataLayer(product, apiProduct);
 
     return product;
 };
