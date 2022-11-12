@@ -5,21 +5,22 @@ var priceFactory = require('*/cartridge/scripts/factories/price');
 function createDataLayerObj(apiProduct) {
     return {
         currencyCode: priceFactory.getPrice(apiProduct, null).sales.currency,
-        name: apiProduct.getName(),
-        id: apiProduct.getID(),
         price: priceFactory.getPrice(apiProduct, null).sales.value,
+        category: apiProduct.getPrimaryCategory().getID(),
         brand: apiProduct.getBrand(),
-        category: apiProduct.getClassificationCategory().getID()
+        name: apiProduct.getName(),
+        id: apiProduct.getID()
     };
 }
 
 module.exports = function (object, apiProduct) {
     Object.defineProperty(object, 'dataLayer', {
         enumerable: true,
-        value: JSON.stringify(createDataLayerObj(apiProduct))
+        value: createDataLayerObj(apiProduct)
     });
 };
 
+// list = pageContext.title
 
 // dataLayer.push({
 //     'ecommerce': {
@@ -67,3 +68,15 @@ module.exports = function (object, apiProduct) {
 //     }
 //   });
 
+// {/* <script>
+//     (function() {
+//         window.dataLayer = window.dataLayer || [];
+
+//         <isset name="GTMDataLayer" value="${pdict.GTMDataLayer ? pdict.GTMDataLayer : ((pdict.renderParameters && pdict.renderParameters.GTMDataLayer) ? pdict.renderParameters.GTMDataLayer : '')}" scope="page"/>
+//         <isif condition="${!empty(GTMDataLayer) && GTMDataLayer.length > 0}">
+//         <isloop items="${GTMDataLayer}" var="dl">
+//         window.dataLayer.push(<isprint value="${JSON.stringify(dl)}" encoding="off">);
+//         </isloop>
+//         </isif>
+//     }());
+// </script> */}
