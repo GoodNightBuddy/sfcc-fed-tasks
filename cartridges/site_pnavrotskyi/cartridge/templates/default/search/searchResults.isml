@@ -2,13 +2,10 @@
     <isscript>
         var assets = require('*/cartridge/scripts/assets');
         assets.addJs('/js/search.js');
+        assets.addJs('/js/dataLayer.js');
         assets.addCss('/css/search.css');
     </isscript>
 
-    <div class="search-banner">
-        <isslot id="search-banner" context="global" description="Search Page Top Banner"/>
-    </div>
 
     <isinclude template="search/searchResultsNoDecorator" />
-    <isinclude template="product/compareBar" />
 </isdecorate>

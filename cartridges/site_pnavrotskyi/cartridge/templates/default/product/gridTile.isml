@@ -1,7 +1,3 @@
-<isscript>
-    assets.addJs('/js/dataLayer.js');
-</isscript>
-
 <isset name="showQuickView" value="${true}" scope="page" />
 <isset name="product" value="${pdict.product}" scope="page" />
 <div class="grid-tile product" data-pid="${product.id}" data-datalayer="${JSON.stringify(product.dataLayer)}">
