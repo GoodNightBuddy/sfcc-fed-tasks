@@ -1,0 +1,11 @@
+<isif condition="${slotcontent != null}">
+    <isloop items="${slotcontent.content}" var="contentAsset">
+        <isprint value="${contentAsset.custom.body}" encoding="off" />
+
+    </isloop>
+
+<iselse/>
+
+    <h1>Test asset asset asset</h1>
+
+</isif>

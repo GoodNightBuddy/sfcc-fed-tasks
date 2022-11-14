@@ -20,6 +20,7 @@
 
 <div class="container search-results">
     <div class="row search-nav">
+
         <isif condition="${!pdict.productSearch.isCategorySearch}">
             <div class="nav-tabs-wrapper">
                 <ul class="nav nav-tabs nav-fill" role="tablist">

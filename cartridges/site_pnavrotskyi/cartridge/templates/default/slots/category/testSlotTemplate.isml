@@ -1,0 +1,12 @@
+<isif condition="${slotcontent != null}">
+    <h1>Test slot</h1>
+
+    <iscomment> Then it loops through the slotcontent.content (the content provided for the slot): </iscomment>
+    <isloop items="${slotcontent.content}" var="markupText">
+        <iscomment> Inside the loop the code uses the <isprint> tag: </iscomment>
+        <isprint value="${markupText.markup}" encoding="off" />
+    </isloop>
+
+<iselse/>
+
+</isif>
