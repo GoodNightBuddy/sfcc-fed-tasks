@@ -21,7 +21,6 @@ module.exports = function (object, apiProduct) {
     });
 };
 
-// list = pageContext.title
 
 // dataLayer.push({
 //     'ecommerce': {

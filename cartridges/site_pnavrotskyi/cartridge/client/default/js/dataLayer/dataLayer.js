@@ -1,9 +1,11 @@
+/* eslint-disable no-continue */
 /* eslint-disable require-jsdoc */
 'use strict';
 
 module.exports = {
     events: function () {
         window.dataLayer = window.dataLayer || [];
+        var impressionsCount = 0;
 
         function getVariant(el) {
             var result = {};
@@ -35,9 +37,9 @@ module.exports = {
             return +value;
         }
 
+        // Product detail event instead of impression on PDP
         if (window.pageContext.title === 'Product Detail') {
             const infoObj = JSON.parse($('div[data-datalayer]').attr('data-datalayer'));
-            // window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push({
                 ecommerce: {
                     currencyCode: infoObj.currencyCode,
@@ -56,25 +58,35 @@ module.exports = {
             });
         }
 
-        if (window.pageContext.title === 'Product Detail') {
+        function impression() {
+            var elems = $('.grid-tile');
+            var impressions = [];
+            for (var i = impressionsCount; i < elems.length; i++) {
+                var info = JSON.parse($(elems[i]).attr('data-datalayer'));
+                if (!info) continue;
+                info.position = i + 1;
+                info.variant = 'base';
+                info.list = window.pageContext.title;
+                impressions.push(info);
+                impressionsCount++;
+            }
+
             const infoObj = JSON.parse($('div[data-datalayer]').attr('data-datalayer'));
-            // window.dataLayer.push({ ecommerce: null });
+
             window.dataLayer.push({
                 ecommerce: {
                     currencyCode: infoObj.currencyCode,
-                    detail: {
-                        products: [{
-                            id: infoObj.id,
-                            name: infoObj.name,
-                            price: infoObj.price,
-                            brand: infoObj.brand,
-                            category: infoObj.category,
-                            variant: getVariant()
-                        }]
-                    }
+                    impressions: impressions
 
                 }
             });
+        }
+
+        $(document).on('search:showMoreSuccess', impression);
+
+        // Product impression on PLP
+        if (window.pageContext.title === 'Product Search Results') {
+            impression();
         }
 
         $(document).on('click', '.add-to-cart, .add-to-cart-global', function () {
@@ -86,7 +98,6 @@ module.exports = {
             }
             const infoObj = JSON.parse($(infoEl).attr('data-datalayer'));
             var quantity = getQuantity();
-            // window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push({
                 event: 'addToCart',
                 ecommerce: {
@@ -111,7 +122,6 @@ module.exports = {
             const infoObj = JSON.parse($(e.target).closest('div[data-datalayer]').attr('data-datalayer'));
             window.cartReciever = null;
             var quantity = getQuantity(e.target);
-            // window.dataLayer.push({ ecommerce: null });
             window.cartReciever = {
                 event: 'removeFromCart',
                 ecommerce: {
@@ -136,8 +146,5 @@ module.exports = {
             window.dataLayer.push(window.cartReciever);
             window.cartReciever = null;
         });
-
-
-        $(document).on('search:showMore', console.log('showMore'));
     }
 };
