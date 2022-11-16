@@ -164,7 +164,6 @@ var events = {
      */
     removeFromCart(e) {
         const infoObj = JSON.parse($(e.target).closest('div[data-datalayer]').attr('data-datalayer'));
-        window[this.cartReciever] = null;
         var quantity = this.getQuantity(e.target);
         var variant = this.getVariant(e.target);
         var price = infoObj.price * quantity;
@@ -173,7 +172,7 @@ var events = {
         infoObj.quantity = quantity;
         infoObj.list = window.pageContext.title;
 
-        window.cartReciever = {
+        window[this.cartReciever] = {
             event: 'removeFromCart',
             ecommerce: {
                 currencyCode: infoObj.currencyCode,
@@ -187,11 +186,9 @@ var events = {
     /**
      * Remove from cart event for dataLayer. It pushes event information into window object.
      * When remove confirmed copy window object into dataLayer array.
-     * Clear window object
      */
     confirmRemove() {
-        window.dataLayer.push(window.cartReciever);
-        window[this.cartReciever] = null;
+        window.dataLayer.push(window[this.cartReciever]);
     }
 };
 
