@@ -3,6 +3,7 @@
 
 var events = {
     impressionsCount: 0,
+    cartReciever: new Symbol('cartReciever for dataLayer removeFromCart event'),
 
     /**
      * Recieves the button that was clicked or null
@@ -15,15 +16,16 @@ var events = {
         var selectElems;
         var colorButton;
 
-        if (el) {
+        if (el) { // Element(el) needed for quickview page. There can be multiple products per page.  Therefore needed find select element in apropriate block
             selectElems = $($(el).closest('.modal-content')).find('select.custom-select');
             colorButton = $($(el).closest('.modal-content')).find('button.color-attribute');
-        } else {
+        } else { // Means PDP. It has select elements only for one product
             selectElems = $('select.custom-select');
             colorButton = $('button.color-attribute');
         }
 
-        if (!selectElems.length && !colorButton.length && el) {
+
+        if (!selectElems.length && !colorButton.length && el) { // Cart do not have this elements. Cart retain variant info in "p" tag
             var parent = $(el).closest('div[data-datalayer]');
             var elems = $(parent).find('.line-item-attributes');
             $(elems).each(function () {
@@ -35,7 +37,7 @@ var events = {
                 }
             });
         } else {
-            $(selectElems).each(function () {
+            $(selectElems).each(function () { // Retrieve variant info from select elems for PDP an qickview page
                 var selectedOption = $(this).find(':selected');
                 var key = $(this).attr('id');
                 var value = selectedOption.attr('data-attr-value');
@@ -128,11 +130,11 @@ var events = {
         var infoEl;
         var variant;
         var quantity;
-        if ($(e.target).hasClass('add-to-cart-global')) {
+        if ($(e.target).hasClass('add-to-cart-global')) {       // For minicart
             infoEl = $(e.target).closest('.modal-content').find('div[data-datalayer]');
             variant = this.getVariant(e.target);
             quantity = this.getQuantity(e.target);
-        } else {
+        } else {                                                // For PDP
             infoEl = $(e.target).closest('div[data-datalayer]');
             variant = this.getVariant();
             quantity = this.getQuantity();
@@ -162,7 +164,7 @@ var events = {
      */
     removeFromCart(e) {
         const infoObj = JSON.parse($(e.target).closest('div[data-datalayer]').attr('data-datalayer'));
-        window.cartReciever = null;
+        window[this.cartReciever] = null;
         var quantity = this.getQuantity(e.target);
         var variant = this.getVariant(e.target);
         var price = infoObj.price * quantity;
@@ -189,7 +191,7 @@ var events = {
      */
     confirmRemove() {
         window.dataLayer.push(window.cartReciever);
-        window.cartReciever = null;
+        window[this.cartReciever] = null;
     }
 };
 
@@ -201,11 +203,11 @@ module.exports = {
 
         // Product impression on PLP for first load
         if (window.pageContext.title === 'Product Search Results') {
-            events.impression();
+            events.impression.call(events);
         }
 
         if (window.pageContext.title === 'Product Detail') {
-            events.detailView();
+            events.detailView.call(events);
         }
 
         $(document).on('click', '.add-to-cart, .add-to-cart-global', events.addToCart.bind(events));
@@ -213,6 +215,6 @@ module.exports = {
         $(document).on('click', '.remove-product', events.removeFromCart.bind(events));
 
         // When remove confirmed copy window object into dataLayer array.
-        $(document).on('click', '.cart-delete-confirmation-btn', events.confirmRemove);
+        $(document).on('click', '.cart-delete-confirmation-btn', events.confirmRemove.bind(events));
     }
 };
