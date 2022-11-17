@@ -89,6 +89,58 @@
                         }
                     ]
                 }
+            },
+
+            {
+                "@type-id": "custom.exportCustomersPNavrotskyi",
+                "@supports-parallel-execution": "false",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "Using existing CSV file creats XML file with inventory lists and imports it to BM",
+                "module": "site_pnavrotskyi/cartridge/scripts/steps/importInvetoryPNavrotskyi.js",
+                "function": "exportCustomers",
+                "transactional": "false",
+                "timeout-in-seconds": "900",
+                "parameters": {
+                    "parameters": [
+                        {
+                            "@name": "startDate",
+                            "@type": "datetime-string",
+                            "@required": "false",
+                            "description": "Search query as a creationDate attribute in customers profile"
+                        },
+
+                        {
+                            "@name": "endDate",
+                            "@type": "datetime-string",
+                            "@required": "false",
+                            "description": "Search query as a creationDate attribute in customers profile"
+                        },
+
+                        {
+                            "@name": "email",
+                            "@type": "string",
+                            "@required": "true",
+                            "description": "Email to which the results will be sent. You can define several emails via coma delimiter"
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when the step failed with an error."
+                        },
+                        {
+                            "@code": "FINISHED",
+                            "description": "Used when the step finished successfully."
+                        },
+                        {
+                            "@code": "FINISHED_WITH_WARNINGS",
+                            "description": "Used when the step finished with warnings."
+                        }
+                    ]
+                }
             }
         ]
     }
