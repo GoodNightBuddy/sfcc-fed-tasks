@@ -1,26 +1,16 @@
+/* eslint-disable require-jsdoc */
 /* eslint-disable no-continue */
 'use strict';
 
-var CustomerMgr = require('dw/customer/CustomerMgr');
+var ProductMgr = require('dw/catalog/ProductMgr');
 var File = require('dw/io/File');
-var System = require('dw/system/System');
 var Logger = require('dw/system/Logger');
-var URLUtils = require('dw/web/URLUtils');
 var FileWriter = require('dw/io/FileWriter');
 var FileReader = require('dw/io/FileReader');
 var CSVStreamReader = require('dw/io/CSVStreamReader');
-var XMLStreamWriter = require('dw/io/XMLStreamWriter');
 var XMLIndentingStreamWriter = require('dw/io/XMLIndentingStreamWriter');
 
-
-/**
-* @function exportCustomers
-* @description This script filtered customers and export them into .csv file.
-*
-* @param {Object} parameters Represents the parameters defined in the steptypes.json file
-*/
-
-function openInventoryList(xsw, lisId) {
+function startInvetoryList(xsw, lisId) {
     xsw.writeStartElement('inventory-list');
     xsw.getNewLine();
         xsw.writeStartElement('header');
@@ -46,7 +36,7 @@ function openInventoryList(xsw, lisId) {
         xsw.writeStartElement('records');
 }
 
-function closeInvenoryList(xsw) {
+function endInvetoryList(xsw) {
     xsw.writeEndElement();
     xsw.writeEndElement();
 }
@@ -63,6 +53,38 @@ function createRecord(xsw, productId, allocation) {
         xsw.writeEndElement();
 }
 
+function getFile(sourceFolderPath, regExp) {
+    var sourceFolder = new File(sourceFolderPath);
+    var filesList = sourceFolder.listFiles();
+    var sourceFileName;
+
+    for (var i = 0; i < filesList.length; i++) {
+        if (regExp.test(filesList[i].name)) {
+            sourceFileName = filesList[i].name;
+            break;
+        }
+    }
+
+    var sourceFilePath = sourceFolderPath + sourceFileName;
+    var sourceFile = new File(sourceFilePath);
+    return sourceFile;
+}
+
+function startDocument(xsw) {
+    xsw.setIndent('    ');
+    xsw.writeStartDocument();
+    xsw.getNewLine();
+    xsw.writeStartElement('inventory');
+    xsw.writeAttribute('xmlns', 'http://www.demandware.com/xml/impex/inventory/2007-05-31');
+    xsw.getNewLine();
+}
+
+function endDocument(xsw) {
+    endInvetoryList(xsw);
+    xsw.writeEndElement();
+    xsw.writeEndDocument();
+}
+
 function importInvetory(parameters) {
     var regExp = new RegExp(parameters.FileNamePattern);
     var paramsPath = parameters.SourceFolderPath || '';
@@ -72,24 +94,11 @@ function importInvetory(parameters) {
     }
     var sourceFolderPath = File.IMPEX + File.SEPARATOR + 'src' + File.SEPARATOR + paramsPath;
     var prefix = parameters.Prefix + '_';
-    var sourceFileName;
+    var sourceFile = getFile(sourceFolderPath, regExp);
 
-    var sourceFolder = new File(sourceFolderPath);
-    var filesList = sourceFolder.listFiles();
-
-    for (var i = 0; i < filesList.length; i++) {
-        if (regExp.test(filesList[i].name)) {
-            sourceFileName = filesList[i].name;
-            break;
-        }
-    }
-
-    if (!sourceFileName) return;
-
+    if (!sourceFile) return;
 
     var fileseparator = ',';
-    var sourceFilePath = sourceFolderPath + sourceFileName;
-    var sourceFile = new File(sourceFilePath);
     var fileReader = new FileReader(sourceFile, 'UTF-8');
     var csr = new CSVStreamReader(fileReader, fileseparator);
 
@@ -99,38 +108,42 @@ function importInvetory(parameters) {
     var fileWriter = new FileWriter(listFile, 'UTF-8');
     var xsw = new XMLIndentingStreamWriter(fileWriter);
 
-    xsw.setIndent('    ');
-    xsw.writeStartDocument();
-    xsw.getNewLine();
-    xsw.writeStartElement('inventory');
-    xsw.writeAttribute('xmlns', 'http://www.demandware.com/xml/impex/inventory/2007-05-31');
-    xsw.getNewLine();
+    startDocument(xsw);
 
     var listCount = 0;
     var row = csr.readNext();
     while (row) {
-        if (row.some(function (el) { return isNaN(+el); })) continue;
+        if (row.some(function (el) { return isNaN(+el); })) {
+            row = csr.readNext();
+            continue;
+        }
+
         var listNumber = +row[0];
-        var producId = +row[1];
-        var allocation = +row[2];
+        var productId = row[1];
+        var allocation = row[2];
+
+        if (!ProductMgr.getProduct(productId)) {
+            row = csr.readNext();
+            continue;
+        }
 
         if (listCount === 0) {
-            openInventoryList(xsw, prefix + listNumber);
-            listCount++;
+            startInvetoryList(xsw, prefix + listNumber);
+            listCount = listNumber;
         }
 
         if (listNumber !== listCount) {
-            closeInvenoryList(xsw);
-            openInventoryList(xsw, prefix + listNumber);
+            endInvetoryList(xsw);
+            startInvetoryList(xsw, prefix + listNumber);
+            listCount++;
         }
 
-        createRecord(xsw, producId, allocation);
+        createRecord(xsw, productId, allocation);
 
         row = csr.readNext();
     }
-    closeInvenoryList(xsw);
-    xsw.writeEndElement();
-    xsw.writeEndDocument();
+
+    endDocument(xsw);
 
     csr.close();
     xsw.close();
