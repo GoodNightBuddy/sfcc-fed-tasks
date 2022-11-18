@@ -38,7 +38,6 @@
                     ]
                 }
             },
-
             {
                 "@type-id": "custom.exportCustomersPNavrotskyi",
                 "@supports-parallel-execution": "false",
@@ -57,14 +56,12 @@
                             "@required": "false",
                             "description": "Search query as a creationDate attribute in customers profile"
                         },
-
                         {
                             "@name": "endDate",
                             "@type": "datetime-string",
                             "@required": "false",
                             "description": "Search query as a creationDate attribute in customers profile"
                         },
-
                         {
                             "@name": "email",
                             "@type": "string",
@@ -90,38 +87,36 @@
                     ]
                 }
             },
-
             {
-                "@type-id": "custom.exportCustomersPNavrotskyi",
+                "@type-id": "custom.CreateInvetoryListPNavrotskyi",
                 "@supports-parallel-execution": "false",
                 "@supports-site-context": "true",
                 "@supports-organization-context": "false",
-                "description": "Using existing CSV file creats XML file with inventory lists and imports it to BM",
+                "description": "Using existing CSV file creats XML file with inventory lists",
                 "module": "site_pnavrotskyi/cartridge/scripts/steps/importInvetoryPNavrotskyi.js",
-                "function": "exportCustomers",
+                "function": "importInvetory",
                 "transactional": "false",
-                "timeout-in-seconds": "900",
+                "timeout-in-seconds": "10",
                 "parameters": {
                     "parameters": [
                         {
-                            "@name": "startDate",
-                            "@type": "datetime-string",
+                            "@name": "FileNamePattern",
+                            "@type": "string",
                             "@required": "false",
-                            "description": "Search query as a creationDate attribute in customers profile"
+                            "default-value": "data_\\d+\\.csv",
+                            "description": "Regular expression pattern to select import files, e.g. 'import_.*\\.xml'. Matching files are imported in alphanumerical order. If not defined all files in working folder are imported."
                         },
-
                         {
-                            "@name": "endDate",
-                            "@type": "datetime-string",
+                            "@name": "SourceFolderPath",
+                            "@type": "string",
                             "@required": "false",
-                            "description": "Search query as a creationDate attribute in customers profile"
+                            "description": "The folder that contains the import files, relative to the 'IMPEX/src/' folder. If not defined 'IMPEX/src/' is used as working folder."
                         },
-
                         {
-                            "@name": "email",
+                            "@name": "Prefix",
                             "@type": "string",
                             "@required": "true",
-                            "description": "Email to which the results will be sent. You can define several emails via coma delimiter"
+                            "description": "Prefix for naming inventory lists."
                         }
                     ]
                 },
