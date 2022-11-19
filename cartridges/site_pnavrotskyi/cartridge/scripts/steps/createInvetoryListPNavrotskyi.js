@@ -50,8 +50,8 @@ function getFile(sourceFolderPath, regExp) {
 
 
 /**
-  * Helper fro custom.CreateInvetoryListPNavrotskyi step
-  * Reads source CSV file and writes data into XML file. Checks presence each product in site
+  * Helper for custom.CreateInvetoryListPNavrotskyi step
+  * Reads source CSV file and writes data into XML file. Checks presence each product at site
 */
 var listHelper = {
     /**
@@ -214,8 +214,9 @@ var listHelper = {
 }
 
 /**
-  * Read source CSV file and write data into XML file. Checks presence each product in site
-  * @description Recieved sorce CSV and creates target XML files. Transfer data from SCV to XML.
+  * Read source CSV file and write data into XML file. Checks presence each product at site
+  * @description Recieved source folder and regExp for searching CSV file.
+  * Transfer data from SCV to XML with provided list prefix.
   * @param {parameters} parameters - provided parameters from custom step
   * @returns {void}
 */
