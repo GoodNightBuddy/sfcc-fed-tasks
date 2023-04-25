@@ -1,0 +1,30 @@
+<isif condition="${slotcontent}">
+    <div id="homeCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <isloop items="${slotcontent.content}" var="category" status="loopstatus">
+                <li data-target="#homeCarousel" data-slide-to="${loopstatus.index}"
+                    class="${loopstatus.index === 0 ? 'active' : ''}"></li>
+            </isloop>
+        </ol>
+        <div class="carousel-inner">
+            <isloop items="${slotcontent.content}" var="category" status="loopstatus">
+                <div class="carousel-item ${loopstatus.index === 0 ? 'active' : ''}">
+                    <a href="${URLUtils.url('Search-Show', 'cgid', category.ID)}" title="${category.displayName}"
+                        style="background-image: url(${category.custom.slotBannerImage.getURL()}); background-size: cover; display: block; aspect-ratio: 16/9;">
+                        <h1 class="header page-title">
+                            ${category.displayName}
+                        </h1>
+                    </a>
+                </div>
+            </isloop>
+        </div>
+        <a class="carousel-control-prev" href="#homeCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#homeCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</isif>

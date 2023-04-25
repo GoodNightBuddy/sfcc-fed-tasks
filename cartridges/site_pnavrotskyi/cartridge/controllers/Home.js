@@ -5,16 +5,25 @@ var Site = require('dw/system/Site').getCurrent();
 var Logger = require('dw/system/Logger');
 var Resource = require('dw/web/Resource');
 var URLUtils = require('dw/web/URLUtils');
+var CatalogMgr = require('dw/catalog/CatalogMgr');
 var cache = require('*/cartridge/scripts/middleware/cache');
 server.extend(module.superModule);
 
-/**
- * Any customization on this endpoint, also requires update for Default-Start endpoint
- */
+/* Allow use of TopLevel empty() */
+/* global empty */
 
 server.prepend('Show', cache.applyDefaultCache, function (req, res, next) {
     var viewData = res.getViewData();
     viewData.param1 = 'This is from prepend';
+
+    // var catalog = CatalogMgr.getSiteCatalog();
+    // var rootCat = catalog.getRoot();
+    // var onlineCategories = rootCat.getOnlineSubCategories();
+
+    // if (!empty(onlineCategories)) {
+    //     viewData.categories = onlineCategories.toArray();
+    // }
+
     res.setViewData(viewData);
     next();
 });
@@ -31,7 +40,6 @@ server.append('Show', cache.applyCustomCache, function (req, res, next) {
     });
     next();
 });
-
 
 server.get('Users', cache.applyCustomCache, function (req, res, next) {
     try {

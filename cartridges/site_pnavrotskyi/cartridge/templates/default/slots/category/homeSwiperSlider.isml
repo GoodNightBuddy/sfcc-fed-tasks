@@ -1,0 +1,34 @@
+<iscomment> <isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/homeSwiperSlider.js');
+</isscript> </iscomment>
+
+<div class="swiper" style="aspect-ratio: 16/9;"`>
+    <div class="swiper-wrapper">
+        <isloop items="${slotcontent.content}" var="category">
+            <a class="swiper-slide" href="${URLUtils.url('Search-Show', 'cgid', category.ID)}"
+                title="${category.displayName}"
+                style="background-image: url(${category.custom.slotBannerImage.getURL()}); background-size: cover;display: block; cursor: inherited;">
+                <h1 class=" header page-title">
+                    <isprint value="${category.displayName}" encoding="off" />
+                </h1>
+            </a>
+        </isloop>
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+</div>
+
+
+<iscomment>
+    <style>
+        .swiper-slide-image {
+            height: 100%;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+    </style>
+</iscomment>

@@ -1,3 +1,0 @@
-<h3>Here is link to .csv file with all cutomers of site_pnavrotskyi with a corresponding registration date:</h3>
-<h3>${pdict.csvURL}</h3>
-

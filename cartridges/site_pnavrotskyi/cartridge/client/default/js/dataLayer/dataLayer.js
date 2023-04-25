@@ -3,7 +3,7 @@
 
 var events = {
     impressionsCount: 0,
-    cartReciever: new Symbol('cartReciever for dataLayer removeFromCart event'),
+    cartReciever: Symbol('cartReciever for dataLayer removeFromCart event'),
 
     /**
      * Recieves the button that was clicked or null
