@@ -1,0 +1,12 @@
+<isif condition="${slotcontent}">
+    <div id="homeCarousel" class="slick-carousel mb-0">
+        <isloop items="${slotcontent.content}" var="category" status="loopstatus">
+                <a href="${URLUtils.url('Search-Show', 'cgid', category.ID)}" title="${category.displayName}"
+                    style="background-image: url(${category.custom.slotBannerImage.getURL()}); background-size: cover; display: block; aspect-ratio: 16/9;">
+                    <h1 class="header page-title">
+                        ${category.displayName}
+                    </h1>
+                </a>
+        </isloop>
+    </div>
+</isif>

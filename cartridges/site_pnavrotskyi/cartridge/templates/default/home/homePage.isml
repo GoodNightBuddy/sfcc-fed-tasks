@@ -3,6 +3,7 @@
         var assets = require('*/cartridge/scripts/assets.js');
         assets.addJs('/js/productTile.js');
         assets.addJs('/js/homeSwiperSlider.js');
+        assets.addJs('/js/homeSlickSlider.js');
         assets.addCss('/css/homePage.css');
     </isscript>
 
