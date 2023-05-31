@@ -1,0 +1,48 @@
+<isinclude template="/components/modules" sf-toolkit="on" />
+<isscript>
+function getPositionClass(position) {
+  const positions = {
+    "top-left": "align-self-start text-left",
+    "top-center": "align-self-start text-center",
+    "top-right": "align-self-start text-right",
+    "middle-left": "align-self-center text-left",
+    "middle-center": "align-self-center text-center",
+    "middle-right": "align-self-center text-right",
+    "bottom-left": "align-self-end text-left",
+    "bottom-center": "align-self-end text-center",
+    "bottom-right": "align-self-end text-right",
+  };
+
+  return positions[position] || '';
+}
+</isscript>
+
+<isif condition="${slotcontent}">
+  <div id="home-hero-carousel" class="slick-carousel mb-0">
+    <isloop items="${slotcontent.content}" var="contentAsset">
+      <div class="slide-block"
+        style="background-image: url(${contentAsset.custom.desktopImagePNavrotskyi.getURL()});">
+        <div class="container h-100 text-light d-flex flex-column justify-content-between">
+          <div class="row flex-grow-1">
+            <div class="col-12 mh-100 text-${contentAsset.custom.colorPNavrotskyi} ${getPositionClass(contentAsset.custom.textPositionPNavrotskyi)}">
+              <div class="slide-block__text-container">
+                <h1 class="slide-block__title">${contentAsset.custom.headerTextPNavrotskyi}</h1>
+                <p class="slide-block__subtitle">${contentAsset.custom.subHeaderTextPNavrotskyi}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="slide-block__button-container text-center text-${contentAsset.custom.colorPNavrotskyi}">
+                <isbutton href="${contentAsset.custom.buttonLinkPNavrotskyi}"
+                  text="${contentAsset.custom.buttonTitlePNavrotskyi}" textcolor="${contentAsset.custom.colorPNavrotskyi}"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </isloop>
+  </div>
+<iselse/>
+  <h1>No content</h1>
+</isif>

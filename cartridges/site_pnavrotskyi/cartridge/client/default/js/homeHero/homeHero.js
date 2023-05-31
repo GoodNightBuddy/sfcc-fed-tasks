@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-    slickSliderCat: function () {
-        $('#homeCarousel:not(.slick-initialized)').slick({
+    footerCarousel: function () {
+        $('#home-hero-carousel:not(.slick-initialized)').slick({
             dots: true,
             arrows: true,
             prevArrow: '<a class="slick-prev d-flex justify-content-center align-items-center"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="sr-only">Previous</span></a>',

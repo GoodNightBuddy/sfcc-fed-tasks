@@ -1,0 +1,1 @@
+<a href="${pdict.href ? pdict.href  : '#'}" class="btn btn-${pdict.textcolor} slide-block__btn mb-3" target="_blank">${pdict.text ? pdict.text : 'Button'}</a>

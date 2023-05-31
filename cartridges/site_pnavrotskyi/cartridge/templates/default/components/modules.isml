@@ -1,0 +1,11 @@
+<ismodule template="/components/content/contentAsset"
+	name="contentasset"
+	attribute="aid"
+/>
+<iscomment>/*=============Meine kleine=======================*/</iscomment>
+<ismodule template="/components/buttons/isbutton"
+	name="button"
+	attribute="href"
+	attribute="text"
+	attribute="textcolor"
+/>

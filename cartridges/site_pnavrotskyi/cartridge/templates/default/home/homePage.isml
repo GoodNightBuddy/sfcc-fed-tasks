@@ -2,9 +2,10 @@
     <isscript>
         var assets = require('*/cartridge/scripts/assets.js');
         assets.addJs('/js/productTile.js');
+        assets.addCss('/css/homePage.css');
         assets.addJs('/js/homeSwiperSlider.js');
         assets.addJs('/js/homeSlickSlider.js');
-        assets.addCss('/css/homePage.css');
+        assets.addJs('/js/homeHero.js');
     </isscript>
 
     <!-- +1.888.555.0199 -->
@@ -14,7 +15,9 @@
         <isslot id="home-main-m" description="Main home page slot." context="global" />
     </div>
 
-    <isslot id="custom-home-categories-m" description="Custom categories slots on the home page." context="global" />
+    <isslot id="home-category-palette" description="Custom categories slot on the home page." context="global" />
+
+    <isslot id="home-product-palette" description="Custom product slot on the home page." context="global" />
 
     <div class="container home-categories homepage">
         <div class="row home-main-categories no-gutters">

@@ -11,7 +11,7 @@ const swiper = new Swiper('.swiper', {
     modules: [Navigation, Pagination, Autoplay, EffectFlip, Keyboard],
     effect: 'flip',
     flipEffect: {
-        slideShadows: false,
+        slideShadows: false
     },
     navigation: {
         nextEl: '.swiper-button-next',

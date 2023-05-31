@@ -1,0 +1,36 @@
+// /*=============Meine kleine=======================*/
+
+#home-hero-carousel {
+    .slide-block {
+        background-size: cover;
+        aspect-ratio: 16/9;
+    }
+
+    .slick-dots li button:before {
+        background-color: #495056; // change the color of the dot
+        opacity: 1;
+    }
+
+    .slick-dots li.slick-active button:before {
+        background-color: #22252a; // change the color of the active dot
+        opacity: 1;
+    }
+
+    .slick-arrow {
+        background-color: #495056; // change the background color of the buttons
+        opacity: 1;
+    }
+
+    .slick-arrow:hover {
+        background-color: #22252a; // change the background color of the buttons on hover
+        opacity: 1;
+    }
+
+    .slick-prev {
+        left: 10px; // adjust the position of the prev button
+    }
+
+    .slick-next {
+        right: 10px; // adjust the position of the next button
+    }
+}
