@@ -1,0 +1,9 @@
+<isif condition="${!pdict.images.empty}">
+    <div id="get-thumbs" class="slick-carousel mb-0">
+        <isloop items="${pdict.images}" var="image" status="loopstatus">
+            <div
+                style="background-image: url(${image.url}); background-size: cover; display: block; aspect-ratio: 8/9">
+            </div>
+        </isloop>
+    </div>
+</isif>

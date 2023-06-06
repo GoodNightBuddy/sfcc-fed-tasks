@@ -1,4 +1,4 @@
-<div class="swiper" style="aspect-ratio: 16/9;" `>
+<div class="swiper overflow-hidden" style="aspect-ratio: 16/9;" `>
     <div class="swiper-wrapper">
         <isloop items="${slotcontent.content}" var="category">
             <a class="swiper-slide" href="${URLUtils.url('Search-Show', 'cgid', category.ID)}"

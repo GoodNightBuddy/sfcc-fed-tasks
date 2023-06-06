@@ -1,6 +1,5 @@
-<div class="container fluid m-0">
-    <isif condition="${slotcontent}">
-    <div class="homepage-product-listing row mt-4">
+<isif condition="${slotcontent}">
+    <div class="homepage-product-listing row mx-1 mt-4 mw-100">
         <isloop items="${slotcontent.content}" var="product">
             <div class="col-12 col-md-6 col-lg-3 product-item">
                 <isinclude
@@ -9,7 +8,7 @@
         </isloop>
     </div>
 <iselse/>
-    <h1>No products</h1>
-</isif>
 
-</div>
+    <h1>No products</h1>
+
+</isif>

@@ -6,6 +6,7 @@
         assets.addJs('/js/homeSwiperSlider.js');
         assets.addJs('/js/homeSlickSlider.js');
         assets.addJs('/js/homeHero.js');
+        assets.addJs('/js/getThumbs.js');
     </isscript>
 
     <!-- +1.888.555.0199 -->
