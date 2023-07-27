@@ -15,6 +15,10 @@ $(document).ready(function () {
     processInclude(require('base/components/countrySelector'));
     processInclude(require('lyonscg/components/carousels'));
     processInclude(require('lyonscg/components/tooltips'));
+    /*= ============Meine kleine=======================*/
+    if ($('header.loewe-header').length) {
+        processInclude(require('./components/loeweHeader'));
+    }
 });
 
 require('lyonscg/thirdParty/bootstrap');

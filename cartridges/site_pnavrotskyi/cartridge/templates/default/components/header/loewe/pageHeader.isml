@@ -1,0 +1,41 @@
+<header class="loewe-header w-100">
+    <div class="container-fluid px-4">
+        <div class="row">
+            <div class="col-2 loewe-header__col-left">
+                <isinclude url="${URLUtils.url('Page-IncludeHeaderMenu')}" />
+            </div>
+            <div class="col-8 loewe-header__col-middle">
+                <isinclude template="components/header/loewe/logo" />
+            </div>
+            <div class="col-2 loewe-header__col-right">
+                <ul class="list-unstyled d-flex flex-column justify-content-center align-center h-100">
+                    <li>
+                        <isinclude template="components/header/search" />
+                    </li>
+                    <li>
+                        <isinclude url="${URLUtils.url('Account-Header', 'mobile', true)}" />
+                    </li>
+                    <li>
+                        <isinclude url="${URLUtils.url('Account-Header')}" />
+                    </li>
+                    <li>
+                        <isif condition="${pdict.CurrentUser.authenticated}">
+                            <div class="minicart">
+                                <isinclude url="${URLUtils.url('Favourite-MiniFavourite')}" />
+                            </div>
+                        </isif>
+
+                    </li>
+                    <li>&nbsp;</li>
+                    <li>
+                        <div class="minicart" data-action-url="${URLUtils.url('Cart-MiniCartShow')}">
+                            <isinclude url="${URLUtils.url('Cart-MiniCart')}" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="loewe-menu-background">
+    </div>
+</header>

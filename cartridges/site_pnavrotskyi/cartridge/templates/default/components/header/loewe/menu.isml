@@ -1,0 +1,62 @@
+<ul class="loewe-header-menu d-flex flex-column justify-content-center list-unstyled">
+    <isif condition="${!empty(pdict.Navigation)}">
+        <isloop items="${pdict.Navigation}" var="category">
+            <isset name="categoryAssetId" value="${category.categoryMenuAssetId}" scope="page" />
+            <isif condition="${!empty(category.columns)}">
+                <li class="loewe-header-menu__item">
+                    <a class="loewe-header-menu__link text-uppercase text-decoration-none" href="<isprint value="
+                        ${category.url}" encoding="htmldoublequote" />">
+                    <isprint value="${category.name}" encoding="off" /></a>
+                    <div class="loewe-header-menu__column">
+                        <div class="loewe-header-menu__title">
+                            <isprint value="${category.name}" encoding="off" />
+                        </div>
+                        <ul class="loewe-header-menu__sublist">
+                            <isloop items="${category.columns}" var="column">
+                                <isloop items="${column}" var="cat">
+                                    <li>
+                                        <a href="${cat.url}" role="button" class="loewe-header-menu__subbutton"
+                                            data-category="${cat.object.ID}">${cat.name}</a>
+                                        <isif condition="${!!cat.items.length}">
+                                            <ul class="loewe-header-menu__subcategory-items">
+                                                <isloop items="${cat.items}" var="item" status="loopstatus">
+                                                    <li><a class="loewe-header-menu__subcategory-item"
+                                                            href="${item.url}">${item.name}</a></li>
+                                                </isloop>
+                                            </ul>
+
+                                        </isif>
+                                    </li>
+                                </isloop>
+
+                            </isloop>
+                        </ul>
+                    </div>
+
+                    <div class="loewe-header-menu__image active">
+                        <isprint value="${category.banner}" encoding="off" />
+                    </div>
+                    <isloop items="${category.columns}" var="column">
+                        <isloop items="${column}" var="cat">
+                            <div class="loewe-header-menu__image" data-category="${cat.object.ID}">
+                                <img src="${cat.object.image.absURL}" alt="${cat.object.displayName}">
+                            </div>
+                        </isloop>
+                    </isloop>
+
+                </li>
+            <iselse/>
+                <li class="nav-item" role="menuitem">
+                    <a href="<isprint value=" ${category.url}" encoding="htmldoublequote" />" role="button"
+                    class="nav-link">
+                    <isprint value="${category.name}" encoding="off" /></a>
+                </li>
+            </isif>
+        </isloop>
+
+    </isif>
+
+    <div class="loewe-header-close-button">
+        <i></i>
+    </div>
+</ul>

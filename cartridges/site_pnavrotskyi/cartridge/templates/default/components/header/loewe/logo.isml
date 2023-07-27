@@ -1,0 +1,8 @@
+<div class="loewe-logo d-flex flex-column justify-cowntent-center align-center">
+    <a class="loewe-logo__link" href="${URLUtils.url('Home-Show')}">
+        <img class="logo-black" src="${URLUtils.staticURL('/images/loewe-logo-black.svg')}"
+            alt="${Resource.msg('global.storename', 'common', null)}" />
+        <img class="logo-white" src="${URLUtils.staticURL('/images/loewe-logo-white.svg')}"
+            alt="${Resource.msg('global.storename', 'common', null)}" />
+    </a>
+</div>

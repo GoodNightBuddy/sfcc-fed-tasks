@@ -10,9 +10,6 @@ var Keyboard = require('swiper').Keyboard;
 const swiper = new Swiper('.swiper', {
     modules: [Navigation, Pagination, Autoplay, EffectFlip, Keyboard],
     effect: 'flip',
-    flipEffect: {
-        slideShadows: false
-    },
     navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
